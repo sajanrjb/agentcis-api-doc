@@ -23,7 +23,7 @@
       "get" : {
         "tags" : [ "users" ],
         "summary" : "Fetch the assignees list",
-        "description" : "",
+        "description" : "Fetch the assignees list",
         "operationId" : "fetchUsers",
         "produces" : [ "application/json" ],
         "parameters" : [ {
