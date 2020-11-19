@@ -43,9 +43,6 @@
                 "$ref" : "#/definitions/ContactAssigneeDropdownList"
               }
             }
-          },
-          "405" : {
-            "description" : "Invalid input"
           }
         }
       }
