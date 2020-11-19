@@ -12,7 +12,7 @@
   "basePath" : "/sajanrjb/Expose/1.1.0",
   "tags" : [ {
     "name" : "users",
-    "description" : "Manage user in the system"
+    "description" : "Manage users in the system"
   }, {
     "name" : "contacts",
     "description" : "Manage contacts"
