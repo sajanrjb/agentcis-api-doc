@@ -1,7 +1,7 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "This is an API documentation for Agentcis. For this, you must use API token generated in the agentcis app's settings. Every request begins with https://{yoursubdomain}.agentcisapp.com",
+    "description" : "This is an API documentation for Agentcis. For this, you must use API token generated in the agentcis app's settings page. Every request begins with https://{yoursubdomain}.agentcisapp.com",
     "version" : "1.0.0",
     "title" : "Agentcis APIs"
   },
