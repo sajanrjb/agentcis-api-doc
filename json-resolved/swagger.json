@@ -79,7 +79,7 @@
         "tags" : [ "agents" ],
         "summary" : "Fetch the agents list based on assignee",
         "description" : "Fetch the agents list based on assignee",
-        "operationId" : "fetchAgentsByAgssignee",
+        "operationId" : "fetchAgentsByAssignee",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "assigneeId",
@@ -612,7 +612,7 @@
             "schema" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/inline_response_200_8"
+                "$ref" : "#/definitions/inline_response_200"
               }
             }
           }
@@ -1809,8 +1809,7 @@
         "value" : {
           "type" : "string"
         }
-      },
-      "example" : "[{\"id\":1,\"value\":\"ABC Education\"},{\"id\":2,\"value\":\"XYZ Education\"}]"
+      }
     },
     "inline_response_200_1_address" : {
       "type" : "object",
@@ -2028,17 +2027,6 @@
         "message" : {
           "type" : "string",
           "example" : "Portal has been enabled successfully"
-        }
-      }
-    },
-    "inline_response_200_8" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "type" : "string"
-        },
-        "value" : {
-          "type" : "string"
         }
       }
     },
