@@ -564,9 +564,6 @@
           "enum" : [ "Email", "Phone" ]
         } ],
         "responses" : {
-          "400" : {
-            "description" : "Invalid ID supplied"
-          },
           "422" : {
             "description" : "validation error"
           }
@@ -612,8 +609,18 @@
             "schema" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/inline_response_200"
-              }
+                "$ref" : "#/definitions/Response_SourcesList"
+              },
+              "example" : [ {
+                "id" : "referrer",
+                "value" : "Sub Agent"
+              }, {
+                "id" : 1,
+                "value" : "Facebook"
+              }, {
+                "id" : "custom",
+                "value" : "Others"
+              } ]
             }
           }
         }
@@ -1686,6 +1693,19 @@
       },
       "title" : "Assignee",
       "description" : "Assignee detail in the system"
+    },
+    "Response_SourcesList" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
+        }
+      },
+      "title" : "Sources",
+      "description" : "Response for sources list"
     },
     "ContactUserList" : {
       "type" : "object",
