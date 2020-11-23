@@ -1,12 +1,12 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "This is an API documentation for Agentcis. For this, you must use API token generated in the settings. Every request begins with https://{yoursubdomain}.agentcisapp.com",
-    "version" : "1.1.0",
+    "description" : "This is an API documentation for Agentcis. For this, you must use API token generated in the agentcis app's settings. Every request begins with https://{yoursubdomain}.agentcisapp.com",
+    "version" : "1.0.0",
     "title" : "Agentcis APIs"
   },
   "host" : "virtserver.swaggerhub.com",
-  "basePath" : "/sajanrjb/Expose/1.1.0",
+  "basePath" : "/Introcept/Agentcis/1.0.0",
   "tags" : [ {
     "name" : "users",
     "description" : "Manage users in the system"
@@ -48,7 +48,7 @@
       "get" : {
         "tags" : [ "countries" ],
         "summary" : "Fetch the countries list",
-        "description" : "",
+        "description" : "Fetch the countries list",
         "operationId" : "fetchCountries",
         "produces" : [ "application/json" ],
         "parameters" : [ {
@@ -78,7 +78,7 @@
       "get" : {
         "tags" : [ "agents" ],
         "summary" : "Fetch the agents list based on assignee",
-        "description" : "",
+        "description" : "Fetch the agents list based on assignee",
         "operationId" : "fetchAgentsByAgssignee",
         "produces" : [ "application/json" ],
         "parameters" : [ {
