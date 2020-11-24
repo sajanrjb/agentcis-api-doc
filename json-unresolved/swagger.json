@@ -1,0 +1,2201 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This is an API documentation for Agentcis. For this, you must use API token generated in the agentcis app's settings page. Every request begins with https://{yoursubdomain}.agentcisapp.com",
+    "version" : "1.0.0",
+    "title" : "Agentcis APIs"
+  },
+  "tags" : [ {
+    "name" : "users",
+    "description" : "Manage users in the system"
+  }, {
+    "name" : "contacts",
+    "description" : "Manage contacts"
+  } ],
+  "paths" : {
+    "/api/v2/users/dropdown-list" : {
+      "get" : {
+        "tags" : [ "users" ],
+        "summary" : "Fetch the assignees list",
+        "description" : "Fetch the assignees list",
+        "operationId" : "fetchUsers",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "for",
+          "type" : "string",
+          "description" : "For which module",
+          "enum" : [ "assignee" ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ContactAssigneeDropdownList"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/countries/list" : {
+      "get" : {
+        "tags" : [ "countries" ],
+        "summary" : "Fetch the countries list",
+        "description" : "Fetch the countries list",
+        "operationId" : "fetchCountries",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "keyword",
+          "type" : "string",
+          "description" : "Search keyword"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CountryList"
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/v2/agents/assignee-office/{assigneeId}" : {
+      "get" : {
+        "tags" : [ "agents" ],
+        "summary" : "Fetch the agents list based on assignee",
+        "description" : "Fetch the agents list based on assignee",
+        "operationId" : "fetchAgentsByAssignee",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "assigneeId",
+          "in" : "path",
+          "description" : "ID of an assignee",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Response_AgentListByAssignee"
+              },
+              "example" : [ {
+                "id" : 1,
+                "value" : "ABC Education"
+              }, {
+                "id" : 2,
+                "value" : "XYZ Education"
+              } ]
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/agents/list" : {
+      "get" : {
+        "tags" : [ "agents" ],
+        "summary" : "Fetch subagent/superagent list",
+        "description" : "Fetch subagent/superagent list",
+        "operationId" : "fetchAgents",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "agent_type",
+          "in" : "query",
+          "description" : "Type of agent (1 - Superagent, 2 - Agent)",
+          "type" : "integer",
+          "enum" : [ 1, 2 ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "data" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "id" : {
+                        "type" : "integer"
+                      },
+                      "name" : {
+                        "type" : "string"
+                      },
+                      "photo" : {
+                        "type" : "string"
+                      },
+                      "type" : {
+                        "type" : "string"
+                      },
+                      "email" : {
+                        "type" : "string"
+                      },
+                      "currencies" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "string"
+                        }
+                      },
+                      "address" : {
+                        "type" : "object",
+                        "properties" : {
+                          "city" : {
+                            "type" : "string"
+                          },
+                          "state" : {
+                            "type" : "string"
+                          },
+                          "street" : {
+                            "type" : "string"
+                          },
+                          "country" : {
+                            "type" : "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example" : {
+                "data" : [ {
+                  "address" : {
+                    "city" : "Kathmandu",
+                    "country" : null,
+                    "state" : "Bagmati",
+                    "street" : "Jhochen"
+                  },
+                  "currencies" : [ ],
+                  "email" : "conys@mailinator.net",
+                  "id" : 17,
+                  "name" : "Gemma Reed",
+                  "photo" : "",
+                  "type" : "individual"
+                } ],
+                "permissions" : {
+                  "canAddReferrer" : true,
+                  "canViewReferrer" : true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/applications/{applicationId}/referrer" : {
+      "put" : {
+        "tags" : [ "applications" ],
+        "summary" : "Save application's sub agent or superagent",
+        "description" : "Save application's sub agent or superagent",
+        "operationId" : "saveApplicationAgent",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "applicationId",
+          "type" : "integer",
+          "required" : true,
+          "description" : "Application's ID"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "schema" : {
+            "properties" : {
+              "agent_type" : {
+                "type" : "integer",
+                "example" : 1,
+                "enum" : [ 1, 2 ]
+              },
+              "referrer" : {
+                "type" : "integer",
+                "example" : 2
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "description" : "Application detail"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/applications/{applicationId}/referrer/{agentId}" : {
+      "delete" : {
+        "tags" : [ "applications" ],
+        "summary" : "Delete application's sub agent or superagent",
+        "description" : "Delete application's sub agent or superagent",
+        "operationId" : "deleteApplicationAgent",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "applicationId",
+          "type" : "integer",
+          "required" : true,
+          "description" : "Application's ID"
+        }, {
+          "in" : "path",
+          "name" : "agentId",
+          "type" : "integer",
+          "required" : true,
+          "description" : "Agent's ID"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "description" : "Application detail"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/workflows/list" : {
+      "get" : {
+        "tags" : [ "workflows" ],
+        "summary" : "Fetch the workflows list",
+        "description" : "",
+        "operationId" : "fetchWorkflows",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "search",
+          "type" : "string",
+          "description" : "Search keyword"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "id" : {
+                    "type" : "integer"
+                  },
+                  "name" : {
+                    "type" : "string"
+                  }
+                }
+              },
+              "example" : [ {
+                "id" : 1,
+                "name" : "US Education"
+              }, {
+                "id" : 2,
+                "name" : "Australian Education"
+              } ]
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/partners/dropdown-list" : {
+      "get" : {
+        "tags" : [ "partners" ],
+        "summary" : "Fetch the partners list with branch",
+        "description" : "",
+        "operationId" : "fetchPartnersWithBranch",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "for",
+          "type" : "string",
+          "description" : "For which module",
+          "enum" : [ "addApplication" ]
+        }, {
+          "in" : "query",
+          "name" : "workflow_id",
+          "type" : "integer",
+          "description" : "Workflow's id"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "vendor_id" : {
+                    "type" : "integer"
+                  },
+                  "vendor_name" : {
+                    "type" : "string"
+                  },
+                  "branchid" : {
+                    "type" : "integer"
+                  },
+                  "branch_name" : {
+                    "type" : "string"
+                  }
+                }
+              },
+              "example" : [ {
+                "vendor_id" : 1,
+                "vendor_name" : "ABC Consultancy",
+                "branch_id" : 1,
+                "branch_name" : "Sydney"
+              }, {
+                "vendor_id" : 2,
+                "vendor_name" : "XYZ Consultancy",
+                "branch_id" : 3,
+                "branch_name" : "Melborne"
+              } ]
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/partners/branches/{branchId}/products" : {
+      "get" : {
+        "tags" : [ "products" ],
+        "summary" : "Fetch the products dropdown list",
+        "description" : "",
+        "operationId" : "fetchProducts",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "branchId",
+          "type" : "integer",
+          "description" : "ID of the partner's branch",
+          "required" : true
+        }, {
+          "in" : "query",
+          "name" : "search",
+          "type" : "string",
+          "description" : "Search keyword"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Response_ProductDropdownByBranch"
+              },
+              "example" : [ {
+                "id" : 1,
+                "name" : "MBA"
+              }, {
+                "id" : 2,
+                "name" : "MIT"
+              } ]
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/custom-fields/sections/client/list" : {
+      "get" : {
+        "tags" : [ "custom fields" ],
+        "summary" : "Fetch custom fields list",
+        "description" : "Returns a custom fields of contacts",
+        "operationId" : "getCustomFields",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "data" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "id" : {
+                        "type" : "string"
+                      },
+                      "name" : {
+                        "type" : "string"
+                      },
+                      "field" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "id" : {
+                              "type" : "integer"
+                            },
+                            "entity" : {
+                              "type" : "string"
+                            },
+                            "name" : {
+                              "type" : "string"
+                            },
+                            "type" : {
+                              "type" : "string"
+                            },
+                            "options" : {
+                              "type" : "object",
+                              "properties" : {
+                                "is_required" : {
+                                  "type" : "boolean"
+                                },
+                                "show_in_list" : {
+                                  "type" : "boolean"
+                                }
+                              }
+                            },
+                            "slug" : {
+                              "type" : "string"
+                            },
+                            "section_id" : {
+                              "type" : "integer"
+                            },
+                            "status" : {
+                              "type" : "integer"
+                            },
+                            "items" : {
+                              "type" : "array",
+                              "items" : {
+                                "type" : "object",
+                                "properties" : {
+                                  "id" : {
+                                    "type" : "integer"
+                                  },
+                                  "name" : {
+                                    "type" : "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "example" : {
+                      "id" : 1,
+                      "name" : "Section 1",
+                      "fields" : [ {
+                        "id" : 1,
+                        "entity" : "client",
+                        "name" : "National ID number",
+                        "type" : "number",
+                        "options" : {
+                          "is_required" : true,
+                          "show_in_list" : false
+                        },
+                        "slug" : "82140db7-1104-407a-935d-7ff0a0373669",
+                        "section_id" : 1,
+                        "status" : 1,
+                        "items" : [ ]
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/contacts" : {
+      "get" : {
+        "tags" : [ "contacts" ],
+        "summary" : "Fetch contact list",
+        "description" : "Returns a list of contacts",
+        "operationId" : "getContacts",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "data" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/Contact"
+                  }
+                },
+                "links" : {
+                  "$ref" : "#/definitions/PaginationLink"
+                },
+                "meta" : {
+                  "$ref" : "#/definitions/PaginationMeta"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "contacts" ],
+        "summary" : "Create a contact",
+        "description" : "Create a prospect or a client",
+        "operationId" : "createContact",
+        "produces" : [ "application/json" ],
+        "consumes" : [ "multipart/form-data" ],
+        "parameters" : [ {
+          "name" : "first_name",
+          "in" : "formData",
+          "type" : "string",
+          "required" : true
+        }, {
+          "name" : "last_name",
+          "in" : "formData",
+          "type" : "string",
+          "required" : true
+        }, {
+          "name" : "email",
+          "in" : "formData",
+          "type" : "string",
+          "required" : true
+        }, {
+          "name" : "assignee",
+          "in" : "formData",
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "ID of a user"
+        }, {
+          "name" : "secondary_email",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "phone_number",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "dob",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "client_identifier",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "street",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "city",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "state",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "zip_code",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "country",
+          "in" : "formData",
+          "type" : "integer",
+          "description" : "An ID of a country"
+        }, {
+          "name" : "country_of_passport",
+          "in" : "formData",
+          "type" : "integer",
+          "description" : "An ID of a country"
+        }, {
+          "name" : "visa_expiry_date",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "preferred_intake",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "first_point_of_contact",
+          "in" : "formData",
+          "type" : "string",
+          "enum" : [ "Email", "Phone" ]
+        }, {
+          "name" : "photo",
+          "in" : "formData",
+          "type" : "file"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "message" : {
+                  "type" : "string",
+                  "example" : "You’ve successfully added a Prospect."
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "validation error"
+          }
+        }
+      }
+    },
+    "/api/v2/contacts/{contactId}" : {
+      "get" : {
+        "tags" : [ "contacts" ],
+        "summary" : "Fetch contact detail",
+        "description" : "Fetch contact detail",
+        "operationId" : "contactDetail",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "contactId",
+          "in" : "path",
+          "description" : "ID of contact to update",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "data" : {
+                  "allOf" : [ {
+                    "$ref" : "#/definitions/Contact"
+                  }, {
+                    "type" : "object",
+                    "properties" : {
+                      "meta" : {
+                        "type" : "object"
+                      }
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "contacts" ],
+        "summary" : "Update an existing contact",
+        "description" : "",
+        "operationId" : "updateContact",
+        "consumes" : [ "multipart/form-data" ],
+        "parameters" : [ {
+          "name" : "contactId",
+          "in" : "path",
+          "description" : "ID of contact to update",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "first_name",
+          "in" : "formData",
+          "type" : "string",
+          "required" : true
+        }, {
+          "name" : "last_name",
+          "in" : "formData",
+          "type" : "string",
+          "required" : true
+        }, {
+          "name" : "email",
+          "in" : "formData",
+          "type" : "string",
+          "required" : true
+        }, {
+          "name" : "assignee",
+          "in" : "formData",
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "ID of a user"
+        }, {
+          "name" : "secondary_email",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "phone_number",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "dob",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "client_identifier",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "street",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "city",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "state",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "zip_code",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "country",
+          "in" : "formData",
+          "type" : "integer",
+          "description" : "An ID of a country"
+        }, {
+          "name" : "country_of_passport",
+          "in" : "formData",
+          "type" : "integer",
+          "description" : "An ID of a country"
+        }, {
+          "name" : "visa_expiry_date",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "preferred_intake",
+          "in" : "formData",
+          "type" : "string"
+        }, {
+          "name" : "first_point_of_contact",
+          "in" : "formData",
+          "type" : "string",
+          "enum" : [ "Email", "Phone" ]
+        } ],
+        "responses" : {
+          "422" : {
+            "description" : "validation error"
+          }
+        }
+      }
+    },
+    "/api/v2/contacts/{contactId}/portal-toggle" : {
+      "put" : {
+        "tags" : [ "contacts" ],
+        "summary" : "Change client portal status",
+        "description" : "",
+        "operationId" : "clientPortal",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "contactId",
+          "in" : "path",
+          "description" : "ID of contact to update",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "message" : {
+                  "type" : "string",
+                  "example" : "Portal has been enabled successfully"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/contacts/sources" : {
+      "get" : {
+        "tags" : [ "contacts" ],
+        "summary" : "Fetch the sources list",
+        "description" : "",
+        "operationId" : "fetchSources",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Response_SourcesList"
+              },
+              "example" : [ {
+                "id" : "referrer",
+                "value" : "Sub Agent"
+              }, {
+                "id" : 1,
+                "value" : "Facebook"
+              }, {
+                "id" : "custom",
+                "value" : "Others"
+              } ]
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/applications" : {
+      "post" : {
+        "tags" : [ "applications" ],
+        "summary" : "Fetch an application list",
+        "description" : "",
+        "operationId" : "fetchApplicationList",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "properties" : {
+                "data" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "id" : {
+                        "type" : "integer"
+                      },
+                      "workflow" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "partner" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "product" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "branch" : {
+                            "type" : "string"
+                          },
+                          "partner_name" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "status" : {
+                        "type" : "string"
+                      },
+                      "current_stage" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "next" : {
+                            "type" : "integer"
+                          },
+                          "order" : {
+                            "type" : "integer"
+                          },
+                          "previous" : {
+                            "type" : "integer"
+                          },
+                          "status" : {
+                            "type" : "boolean"
+                          }
+                        }
+                      },
+                      "creator" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "email" : {
+                            "type" : "string"
+                          },
+                          "email_signature" : {
+                            "type" : "string"
+                          },
+                          "branch" : {
+                            "type" : "object",
+                            "properties" : {
+                              "id" : {
+                                "type" : "integer"
+                              },
+                              "name" : {
+                                "type" : "string"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "client" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "email" : {
+                            "type" : "string"
+                          },
+                          "phone" : {
+                            "type" : "string"
+                          },
+                          "status" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "assignee" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "branch" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "application_id" : {
+                        "type" : "string"
+                      },
+                      "applied_intake_date" : {
+                        "type" : "string"
+                      },
+                      "created_at" : {
+                        "type" : "object",
+                        "properties" : {
+                          "actual" : {
+                            "type" : "string"
+                          },
+                          "formatted" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "expected_win_date" : {
+                        "type" : "object",
+                        "properties" : {
+                          "actual" : {
+                            "type" : "string"
+                          },
+                          "formatted" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "in_queue" : {
+                        "type" : "integer"
+                      },
+                      "partner_category" : {
+                        "type" : "string"
+                      },
+                      "stage_in_queue" : {
+                        "type" : "integer"
+                      },
+                      "subAgent" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "updated_at" : {
+                        "type" : "object",
+                        "properties" : {
+                          "actual" : {
+                            "type" : "string"
+                          },
+                          "formatted" : {
+                            "type" : "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "links" : {
+                  "$ref" : "#/definitions/PaginationLink"
+                },
+                "meta" : {
+                  "$ref" : "#/definitions/PaginationMeta"
+                }
+              },
+              "example" : {
+                "data" : {
+                  "all_assignees" : null,
+                  "application_id" : null,
+                  "application_stage_id" : 11,
+                  "applied_intake_date" : null,
+                  "assignee" : {
+                    "id" : 1,
+                    "name" : "Sajan Rajbhandari",
+                    "branch" : "Test Shrestha"
+                  },
+                  "client" : {
+                    "id" : 3,
+                    "phone" : "9851069568",
+                    "status" : "Client",
+                    "name" : "Suzan Demo Thapa",
+                    "email" : "sushan.me@mymail.com"
+                  },
+                  "completed_stages" : null,
+                  "created_at" : {
+                    "formatted" : "2019-06-05",
+                    "actual" : "2019-06-05T11:59:49+00:00"
+                  },
+                  "creator" : {
+                    "id" : 1,
+                    "email_signature" : null,
+                    "email" : null,
+                    "name" : "Sajan Rajbhandari",
+                    "…" : null
+                  },
+                  "current_stage" : {
+                    "id" : 22,
+                    "name" : "Vacancy Check",
+                    "order" : null,
+                    "status" : true,
+                    "actions" : "null",
+                    "next" : 23,
+                    "previous" : null
+                  },
+                  "actions" : "null",
+                  "name" : "Vacancy Check",
+                  "next" : 23,
+                  "order" : null,
+                  "previous" : null,
+                  "status" : true,
+                  "custom_fields" : null,
+                  "discontinue_reason_title" : null,
+                  "expected_win_date" : {
+                    "formatted" : null,
+                    "actual" : null
+                  },
+                  "in_queue" : 522,
+                  "partner" : {
+                    "id" : 9,
+                    "name" : "UniLodge"
+                  },
+                  "partner_category" : null,
+                  "product" : {
+                    "id" : 35,
+                    "name" : "Studio Apartment",
+                    "branch" : "Head Office",
+                    "partner_name" : "UniLodge"
+                  },
+                  "branch" : "Head Office",
+                  "partner_name" : "UniLodge",
+                  "product_category" : null,
+                  "stage_in_queue" : null,
+                  "superAgent" : null,
+                  "updated_at" : {
+                    "formatted" : "2020-06-24",
+                    "actual" : "2020-06-24T08:16:58+00:00"
+                  },
+                  "workflow" : {
+                    "id" : 4,
+                    "name" : "Accomodation Service",
+                    "product_name" : null,
+                    "vendor_name" : null
+                  }
+                },
+                "links" : {
+                  "first" : "http://{subdomain}.agentcisapp.com/api/v2/applications?page=1",
+                  "last" : "http://{subdomain}.agentcisapp.com/api/v2/applications?page=6",
+                  "next" : "http://{subdomain}.agentcisapp.com/api/v2/applications?page=2",
+                  "prev" : null
+                },
+                "meta" : {
+                  "current_page" : 1,
+                  "from" : 1,
+                  "last_page" : 6,
+                  "path" : "http://{subdomain}.agentcisapp.com/api/v2/applications",
+                  "per_page" : 10,
+                  "to" : 10,
+                  "total" : 53
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/client/{contactId}/application" : {
+      "post" : {
+        "tags" : [ "applications" ],
+        "summary" : "Create an application",
+        "description" : "Create an application",
+        "operationId" : "createApplication",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "contactId",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "properties" : {
+              "service_id" : {
+                "type" : "integer"
+              },
+              "vendor_id" : {
+                "type" : "integer"
+              },
+              "vendor_branch_id" : {
+                "type" : "integer"
+              },
+              "product_id" : {
+                "type" : "integer"
+              }
+            },
+            "example" : {
+              "service_id" : 1,
+              "vendor_id" : 2,
+              "vendor_branch_id" : 1,
+              "product_id" : 1
+            }
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "message" : {
+                  "type" : "string",
+                  "example" : "Application added successfully"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "validation error"
+          }
+        }
+      }
+    },
+    "/api/v2/applications/{applicationId}/next" : {
+      "post" : {
+        "tags" : [ "applications" ],
+        "summary" : "Move to next stage",
+        "description" : "Move the application to next stage",
+        "operationId" : "nextApplicationStage",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "applicationId",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "properties" : {
+                "data" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/applications/{applicationId}/previous" : {
+      "post" : {
+        "tags" : [ "applications" ],
+        "summary" : "Move to previous stage",
+        "description" : "Move the application to previous stage",
+        "operationId" : "previousApplicationStage",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "applicationId",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "properties" : {
+                "data" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/applications/{applicationId}/status" : {
+      "post" : {
+        "tags" : [ "applications" ],
+        "summary" : "Change application status",
+        "description" : "Change application status to either Completed or Discontinued",
+        "operationId" : "changeApplicationStatus",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "applicationId",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "schema" : {
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "Discontinue", "Complete" ]
+              }
+            },
+            "example" : {
+              "status" : "Discontinue"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "properties" : {
+                "data" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/applications/{applicationId}/assignee" : {
+      "post" : {
+        "tags" : [ "applications" ],
+        "summary" : "Add an assignee to the application",
+        "description" : "Add an assignee to the application",
+        "operationId" : "addApplicationAssignee",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "applicationId",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "schema" : {
+            "properties" : {
+              "assignee" : {
+                "type" : "integer"
+              }
+            },
+            "example" : {
+              "assignee" : 1
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "properties" : {
+                "data" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "applications" ],
+        "summary" : "Delete an assignee from the application",
+        "description" : "Delete an assignee from the application",
+        "operationId" : "deleteApplicationAssignee",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "applicationId",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "schema" : {
+            "properties" : {
+              "assignee" : {
+                "type" : "integer"
+              }
+            },
+            "example" : {
+              "assignee" : 1
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "properties" : {
+                "data" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/applications/{applicationId}/period" : {
+      "post" : {
+        "tags" : [ "applications" ],
+        "summary" : "Add start/end date",
+        "description" : "Add start/end date",
+        "operationId" : "addApplicationPeriodDate",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "applicationId",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "schema" : {
+            "properties" : {
+              "applicationStageId" : {
+                "type" : "integer"
+              },
+              "start_date" : {
+                "type" : "string"
+              }
+            },
+            "example" : {
+              "applicationStageId" : 1,
+              "start_date" : "2020-10-10"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "properties" : {
+                "data" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/applications/{applicationId}" : {
+      "get" : {
+        "tags" : [ "applications" ],
+        "summary" : "Get application detail",
+        "description" : "Get application detail",
+        "operationId" : "getApplicationDetail",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "applicationId",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "properties" : {
+                "data" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "id" : {
+                        "type" : "integer"
+                      },
+                      "workflow" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "product_name" : {
+                            "type" : "string"
+                          },
+                          "vendor_name" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "partner" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "currency_code" : {
+                            "type" : "string"
+                          },
+                          "commission_percentage" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "product" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "branch" : {
+                            "type" : "string"
+                          },
+                          "partner_name" : {
+                            "type" : "string"
+                          },
+                          "revenue_type" : {
+                            "type" : "integer"
+                          }
+                        }
+                      },
+                      "status" : {
+                        "type" : "string"
+                      },
+                      "current_stage" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "next" : {
+                            "type" : "integer"
+                          },
+                          "order" : {
+                            "type" : "integer"
+                          },
+                          "previous" : {
+                            "type" : "integer"
+                          },
+                          "status" : {
+                            "type" : "boolean"
+                          },
+                          "actions" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "creator" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "email" : {
+                            "type" : "string"
+                          },
+                          "email_signature" : {
+                            "type" : "string"
+                          },
+                          "photo" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "start_date" : {
+                        "type" : "object",
+                        "properties" : {
+                          "formatted" : {
+                            "type" : "object"
+                          },
+                          "actual" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "end_date" : {
+                        "type" : "object",
+                        "properties" : {
+                          "formatted" : {
+                            "type" : "object"
+                          },
+                          "actual" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "client" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "email" : {
+                            "type" : "string"
+                          },
+                          "phone" : {
+                            "type" : "string"
+                          },
+                          "photo" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "assignees" : {
+                        "type" : "array",
+                        "items" : {
+                          "properties" : {
+                            "id" : {
+                              "type" : "integer"
+                            },
+                            "name" : {
+                              "type" : "string"
+                            },
+                            "email" : {
+                              "type" : "string"
+                            },
+                            "photo" : {
+                              "type" : "string"
+                            },
+                            "ownership_ratio" : {
+                              "type" : "string"
+                            }
+                          }
+                        }
+                      },
+                      "application_id" : {
+                        "type" : "string"
+                      },
+                      "application_stage_id" : {
+                        "type" : "integer"
+                      },
+                      "in_queue" : {
+                        "type" : "integer"
+                      },
+                      "partner_category" : {
+                        "type" : "string"
+                      },
+                      "stage_in_queue" : {
+                        "type" : "integer"
+                      },
+                      "sub_agent" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "photo" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "super_agent" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          },
+                          "photo" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "completed_satages" : {
+                        "type" : "integer"
+                      },
+                      "stages" : {
+                        "type" : "array",
+                        "items" : {
+                          "properties" : {
+                            "short_name" : {
+                              "type" : "string"
+                            },
+                            "order" : {
+                              "type" : "string"
+                            },
+                            "status" : {
+                              "type" : "integer"
+                            },
+                            "application_id" : {
+                              "type" : "integer"
+                            },
+                            "id" : {
+                              "type" : "integer"
+                            },
+                            "application_stage_id" : {
+                              "type" : "integer"
+                            },
+                            "stage_id" : {
+                              "type" : "integer"
+                            }
+                          }
+                        }
+                      },
+                      "updated_at" : {
+                        "type" : "object",
+                        "properties" : {
+                          "actual" : {
+                            "type" : "string"
+                          },
+                          "formatted" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "created_at" : {
+                        "type" : "object",
+                        "properties" : {
+                          "actual" : {
+                            "type" : "string"
+                          },
+                          "formatted" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "custom_fields" : {
+                        "type" : "object"
+                      },
+                      "todo_invoices" : {
+                        "type" : "array",
+                        "items" : {
+                          "properties" : {
+                            "id" : {
+                              "type" : "integer"
+                            },
+                            "due_date" : {
+                              "type" : "string"
+                            },
+                            "application_id" : {
+                              "type" : "integer"
+                            }
+                          }
+                        }
+                      },
+                      "discontinued_reason_title" : {
+                        "type" : "string"
+                      },
+                      "permissions" : {
+                        "type" : "object"
+                      },
+                      "product_category" : {
+                        "type" : "string"
+                      },
+                      "applied_intake_date" : {
+                        "type" : "object",
+                        "properties" : {
+                          "formatted" : {
+                            "type" : "string"
+                          },
+                          "actual" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "expected_win_date" : {
+                        "type" : "object",
+                        "properties" : {
+                          "formatted" : {
+                            "type" : "string"
+                          },
+                          "actual" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "product_fee" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer"
+                          },
+                          "total" : {
+                            "type" : "integer"
+                          },
+                          "discount" : {
+                            "type" : "integer"
+                          },
+                          "net_revenue" : {
+                            "type" : "integer"
+                          },
+                          "revenue_type" : {
+                            "type" : "integer"
+                          },
+                          "has_commission" : {
+                            "type" : "boolean"
+                          }
+                        }
+                      },
+                      "payment_schedule" : {
+                        "type" : "object",
+                        "properties" : {
+                          "count" : {
+                            "type" : "integer"
+                          },
+                          "total_pending" : {
+                            "type" : "integer"
+                          },
+                          "total_invoiced" : {
+                            "type" : "integer"
+                          },
+                          "total_scheduled" : {
+                            "type" : "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "applications" ],
+        "summary" : "Update an application",
+        "description" : "Update an application",
+        "operationId" : "updateApplication",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "applicationId",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "schema" : {
+            "properties" : {
+              "application_id" : {
+                "type" : "string"
+              },
+              "expected_win_date" : {
+                "type" : "string"
+              }
+            },
+            "example" : {
+              "application_id" : 123,
+              "expected_win_date" : "2020-10-20"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "properties" : {
+                "data" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "PaginationMeta" : {
+      "title" : "Pagination meta",
+      "description" : "Meta of pagination",
+      "type" : "object",
+      "properties" : {
+        "current_page" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 1
+        },
+        "from" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 1
+        },
+        "last_page" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "path" : {
+          "type" : "string",
+          "example" : "http://{subdomain}.agentcisapp.com/api/v2/contacts"
+        },
+        "per_page" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 10
+        },
+        "to" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 10
+        },
+        "total" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 1000
+        }
+      }
+    },
+    "PaginationLink" : {
+      "title" : "Pagination Link",
+      "description" : "Links for pagination",
+      "type" : "object",
+      "properties" : {
+        "first" : {
+          "type" : "string",
+          "example" : "http://{subdomain}.agentcisapp.com/api/v2/contacts?page=1"
+        },
+        "last" : {
+          "type" : "string",
+          "example" : "http://{subdomain}.agentcisapp.com/api/v2/contacts?page=111"
+        },
+        "prev" : {
+          "type" : "string",
+          "example" : null
+        },
+        "next" : {
+          "type" : "string",
+          "example" : null
+        }
+      }
+    },
+    "CountryList" : {
+      "title" : "Countries",
+      "description" : "List of countries",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 1
+        },
+        "country_name" : {
+          "type" : "string",
+          "example" : "Afghanistan"
+        },
+        "currency_name" : {
+          "type" : "string",
+          "example" : "afghani"
+        },
+        "currency_code" : {
+          "type" : "string",
+          "example" : "AFN"
+        },
+        "value" : {
+          "type" : "string",
+          "example" : "Afghanistan - AFN [afghani]"
+        }
+      }
+    },
+    "ContactAssigneeDropdownList" : {
+      "title" : "Assignee",
+      "description" : "Assignee detail in the system",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 1
+        },
+        "first_name" : {
+          "type" : "string",
+          "example" : "Bat"
+        },
+        "last_name" : {
+          "type" : "string",
+          "example" : "Man"
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Bat Man"
+        },
+        "email" : {
+          "type" : "string",
+          "example" : "batman@pm.me"
+        },
+        "branch" : {
+          "type" : "object",
+          "properties" : {
+            "id" : {
+              "type" : "integer",
+              "example" : 1
+            },
+            "name" : {
+              "type" : "string",
+              "example" : "Head Office"
+            }
+          }
+        }
+      }
+    },
+    "Response_SourcesList" : {
+      "title" : "Sources",
+      "description" : "Response for sources list",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Response_ProductDropdownByBranch" : {
+      "title" : "Products dropdown list by branch",
+      "description" : "Response for products dropdown list by branch",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "name" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Response_AgentList" : {
+      "title" : "Agents",
+      "description" : "Response for agents list",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "photo" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "currencies" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "address" : {
+          "type" : "object",
+          "properties" : {
+            "city" : {
+              "type" : "string"
+            },
+            "state" : {
+              "type" : "string"
+            },
+            "street" : {
+              "type" : "string"
+            },
+            "country" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    "Response_AgentListByAssignee" : {
+      "title" : "Agents",
+      "description" : "Response for agents list by assignee office",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ContactUserList" : {
+      "title" : "Contact User",
+      "description" : "Contact's assignee and added by definition",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 1
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Batman"
+        }
+      }
+    },
+    "Contact" : {
+      "title" : "Contact",
+      "description" : "Contact schema",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 1
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "doggie"
+        },
+        "email" : {
+          "type" : "string",
+          "example" : "doggie@gmail.com"
+        },
+        "secondary_email" : {
+          "type" : "string",
+          "example" : "john@gmail.com"
+        },
+        "phone_number" : {
+          "type" : "string",
+          "example" : 9829398383
+        },
+        "dob" : {
+          "type" : "string",
+          "example" : "2020-10-20"
+        },
+        "client_identifier" : {
+          "type" : "string",
+          "example" : 1243
+        },
+        "street" : {
+          "type" : "string",
+          "example" : "New road"
+        },
+        "city" : {
+          "type" : "string",
+          "example" : "Kathmandu"
+        },
+        "state" : {
+          "type" : "string",
+          "example" : "Bagmati"
+        },
+        "zip_code" : {
+          "type" : "string",
+          "example" : 44206
+        },
+        "country" : {
+          "type" : "string",
+          "example" : "Nepal"
+        },
+        "country_of_passport" : {
+          "type" : "string",
+          "example" : "Nepal"
+        },
+        "visa_expiry_date" : {
+          "type" : "string",
+          "example" : "2020-10-20"
+        },
+        "preferred_intake" : {
+          "type" : "string",
+          "example" : "2020-10-20"
+        },
+        "source" : {
+          "type" : "string",
+          "example" : "system"
+        },
+        "portal_enabled" : {
+          "type" : "integer",
+          "example" : 0
+        },
+        "rating" : {
+          "type" : "string",
+          "example" : "Hot"
+        },
+        "status" : {
+          "type" : "string",
+          "example" : "Prospect",
+          "enum" : [ "Prospect" ]
+        },
+        "added_by" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ContactUserList"
+          }
+        },
+        "assignee" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ContactUserList"
+          }
+        }
+      }
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "schemes" : [ "https" ],
+  "basePath" : "/Introcept/Agentcis/1.0.0"
+}
