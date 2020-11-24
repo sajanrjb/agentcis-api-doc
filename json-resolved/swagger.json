@@ -95,8 +95,15 @@
             "schema" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/inline_response_200"
-              }
+                "$ref" : "#/definitions/Response_AgentListByAssignee"
+              },
+              "example" : [ {
+                "id" : 1,
+                "value" : "ABC Education"
+              }, {
+                "id" : 2,
+                "value" : "XYZ Education"
+              } ]
             }
           }
         }
@@ -121,7 +128,7 @@
           "200" : {
             "description" : "successfull operation",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_1"
+              "$ref" : "#/definitions/inline_response_200"
             }
           }
         }
@@ -210,7 +217,7 @@
             "schema" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/inline_response_200_2"
+                "$ref" : "#/definitions/inline_response_200_1"
               }
             }
           }
@@ -244,7 +251,7 @@
             "schema" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/inline_response_200_3"
+                "$ref" : "#/definitions/inline_response_200_2"
               }
             }
           }
@@ -277,7 +284,7 @@
             "schema" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/inline_response_200_2"
+                "$ref" : "#/definitions/inline_response_200_1"
               }
             }
           }
@@ -296,7 +303,7 @@
           "200" : {
             "description" : "successful operation",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_4"
+              "$ref" : "#/definitions/inline_response_200_3"
             }
           }
         }
@@ -314,7 +321,7 @@
           "200" : {
             "description" : "successful operation",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_5"
+              "$ref" : "#/definitions/inline_response_200_4"
             }
           }
         }
@@ -454,7 +461,7 @@
           "200" : {
             "description" : "successful operation",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_6"
+              "$ref" : "#/definitions/inline_response_200_5"
             }
           }
         }
@@ -589,7 +596,7 @@
           "200" : {
             "description" : "successful operation",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_7"
+              "$ref" : "#/definitions/inline_response_200_6"
             }
           }
         }
@@ -1707,6 +1714,19 @@
       "title" : "Sources",
       "description" : "Response for sources list"
     },
+    "Response_AgentListByAssignee" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
+        }
+      },
+      "title" : "Agents",
+      "description" : "Response for agents list by assignee office"
+    },
     "ContactUserList" : {
       "type" : "object",
       "properties" : {
@@ -1820,18 +1840,7 @@
       "title" : "Contact",
       "description" : "Contact schema"
     },
-    "inline_response_200" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "type" : "string"
-        },
-        "value" : {
-          "type" : "string"
-        }
-      }
-    },
-    "inline_response_200_1_address" : {
+    "inline_response_200_address" : {
       "type" : "object",
       "properties" : {
         "city" : {
@@ -1848,7 +1857,7 @@
         }
       }
     },
-    "inline_response_200_1_data" : {
+    "inline_response_200_data" : {
       "type" : "object",
       "properties" : {
         "id" : {
@@ -1873,17 +1882,17 @@
           }
         },
         "address" : {
-          "$ref" : "#/definitions/inline_response_200_1_address"
+          "$ref" : "#/definitions/inline_response_200_address"
         }
       }
     },
-    "inline_response_200_1" : {
+    "inline_response_200" : {
       "type" : "object",
       "properties" : {
         "data" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/inline_response_200_1_data"
+            "$ref" : "#/definitions/inline_response_200_data"
           }
         }
       },
@@ -1901,7 +1910,7 @@
         }
       }
     },
-    "inline_response_200_2" : {
+    "inline_response_200_1" : {
       "type" : "object",
       "properties" : {
         "id" : {
@@ -1912,7 +1921,7 @@
         }
       }
     },
-    "inline_response_200_3" : {
+    "inline_response_200_2" : {
       "type" : "object",
       "properties" : {
         "vendor_id" : {
@@ -1929,7 +1938,7 @@
         }
       }
     },
-    "inline_response_200_4_options" : {
+    "inline_response_200_3_options" : {
       "type" : "object",
       "properties" : {
         "is_required" : {
@@ -1940,7 +1949,7 @@
         }
       }
     },
-    "inline_response_200_4_field" : {
+    "inline_response_200_3_field" : {
       "type" : "object",
       "properties" : {
         "id" : {
@@ -1956,7 +1965,7 @@
           "type" : "string"
         },
         "options" : {
-          "$ref" : "#/definitions/inline_response_200_4_options"
+          "$ref" : "#/definitions/inline_response_200_3_options"
         },
         "slug" : {
           "type" : "string"
@@ -1970,12 +1979,12 @@
         "items" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/inline_response_200_2"
+            "$ref" : "#/definitions/inline_response_200_1"
           }
         }
       }
     },
-    "inline_response_200_4_data" : {
+    "inline_response_200_3_data" : {
       "type" : "object",
       "properties" : {
         "id" : {
@@ -1987,24 +1996,24 @@
         "field" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/inline_response_200_4_field"
+            "$ref" : "#/definitions/inline_response_200_3_field"
           }
         }
       },
       "example" : "{\"id\":1,\"name\":\"Section 1\",\"fields\":[{\"id\":1,\"entity\":\"client\",\"name\":\"National ID number\",\"type\":\"number\",\"options\":{\"is_required\":true,\"show_in_list\":false},\"slug\":\"82140db7-1104-407a-935d-7ff0a0373669\",\"section_id\":1,\"status\":1,\"items\":[]},{\"id\":18,\"entity\":\"client\",\"name\":\"Xender\",\"type\":\"dropdown\",\"options\":{\"is_multiple\":true,\"is_required\":false,\"show_in_list\":true},\"slug\":\"359bcea9-a47d-4a4c-b523-98b279b16b21\",\"section_id\":1,\"status\":1,\"items\":[{\"id\":2,\"name\":\"Test\",\"status\":1,\"meta_field_id\":18},{\"id\":4,\"name\":\"Test 3\",\"status\":1,\"meta_field_id\":18}]}]}"
     },
-    "inline_response_200_4" : {
+    "inline_response_200_3" : {
       "type" : "object",
       "properties" : {
         "data" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/inline_response_200_4_data"
+            "$ref" : "#/definitions/inline_response_200_3_data"
           }
         }
       }
     },
-    "inline_response_200_5" : {
+    "inline_response_200_4" : {
       "type" : "object",
       "properties" : {
         "data" : {
@@ -2030,18 +2039,18 @@
         }
       }
     },
-    "inline_response_200_6_data" : {
+    "inline_response_200_5_data" : {
       "type" : "object"
     },
-    "inline_response_200_6" : {
+    "inline_response_200_5" : {
       "type" : "object",
       "properties" : {
         "data" : {
-          "$ref" : "#/definitions/inline_response_200_6_data"
+          "$ref" : "#/definitions/inline_response_200_5_data"
         }
       }
     },
-    "inline_response_200_7" : {
+    "inline_response_200_6" : {
       "type" : "object",
       "properties" : {
         "message" : {
