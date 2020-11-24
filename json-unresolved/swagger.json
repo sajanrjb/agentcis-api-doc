@@ -1068,7 +1068,7 @@
                   "applied_intake_date" : null,
                   "assignee" : {
                     "id" : 1,
-                    "name" : "Sajan Rajbhandari",
+                    "name" : "Bat man",
                     "branch" : "Test Shrestha"
                   },
                   "client" : {
@@ -1087,8 +1087,7 @@
                     "id" : 1,
                     "email_signature" : null,
                     "email" : null,
-                    "name" : "Sajan Rajbhandari",
-                    "…" : null
+                    "name" : "Bat man"
                   },
                   "current_stage" : {
                     "id" : 22,
@@ -1407,11 +1406,15 @@
               },
               "start_date" : {
                 "type" : "string"
+              },
+              "end_date" : {
+                "type" : "string"
               }
             },
             "example" : {
               "applicationStageId" : 1,
-              "start_date" : "2020-10-10"
+              "start_date" : "2020-10-10",
+              "end_date" : "2020-11-10"
             }
           }
         } ],
