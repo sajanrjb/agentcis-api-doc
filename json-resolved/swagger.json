@@ -109,7 +109,7 @@
         }
       }
     },
-    "/api/referrer/list" : {
+    "/api/v2/agents/list" : {
       "get" : {
         "tags" : [ "agents" ],
         "summary" : "Fetch subagent/superagent list",
