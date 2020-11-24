@@ -126,7 +126,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successfull operation",
+            "description" : "successful operation",
             "schema" : {
               "$ref" : "#/definitions/inline_response_200"
             }
@@ -284,8 +284,15 @@
             "schema" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/inline_response_200_1"
-              }
+                "$ref" : "#/definitions/Response_ProductDropdownByBranch"
+              },
+              "example" : [ {
+                "id" : 1,
+                "name" : "MBA"
+              }, {
+                "id" : 2,
+                "name" : "MIT"
+              } ]
             }
           }
         }
@@ -907,15 +914,15 @@
                   }
                 },
                 "links" : {
-                  "first" : "http://{subdomain}.agentcis.local/api/v2/applications?page=1",
-                  "last" : "http://{subdomain}.agentcis.local/api/v2/applications?page=6",
-                  "next" : "http://{subdomain}.agentcis.local/api/v2/applications?page=2"
+                  "first" : "http://{subdomain}.agentcisapp.com/api/v2/applications?page=1",
+                  "last" : "http://{subdomain}.agentcisapp.com/api/v2/applications?page=6",
+                  "next" : "http://{subdomain}.agentcisapp.com/api/v2/applications?page=2"
                 },
                 "meta" : {
                   "current_page" : 1,
                   "from" : 1,
                   "last_page" : 6,
-                  "path" : "http://{subdomain}.agentcis.local/api/v2/applications",
+                  "path" : "http://{subdomain}.agentcisapp.com/api/v2/applications",
                   "per_page" : 10,
                   "to" : 10,
                   "total" : 53
@@ -1713,6 +1720,50 @@
       },
       "title" : "Sources",
       "description" : "Response for sources list"
+    },
+    "Response_ProductDropdownByBranch" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "name" : {
+          "type" : "string"
+        }
+      },
+      "title" : "Products dropdown list by branch",
+      "description" : "Response for products dropdown list by branch"
+    },
+    "Response_AgentList" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "photo" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "currencies" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "address" : {
+          "$ref" : "#/definitions/inline_response_200_address"
+        }
+      },
+      "title" : "Agents",
+      "description" : "Response for agents list"
     },
     "Response_AgentListByAssignee" : {
       "type" : "object",
