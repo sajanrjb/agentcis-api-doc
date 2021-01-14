@@ -2179,6 +2179,46 @@
           }
         }
       }
+    },
+    "/api/v2/office-visits" : {
+      "get" : {
+        "tags" : [ "office visits" ],
+        "summary" : "Get office visit list",
+        "description" : "Get office visit list",
+        "operationId" : "getOfficeVisitList",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "status",
+          "type" : "string",
+          "enum" : [ "waiting", "attending", "completed" ]
+        }, {
+          "in" : "query",
+          "name" : "branch_id",
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "data" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/Response_OfficeVisitList"
+                  }
+                },
+                "links" : {
+                  "$ref" : "#/definitions/PaginationLink"
+                },
+                "meta" : {
+                  "$ref" : "#/definitions/PaginationMeta"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions" : {
@@ -3025,6 +3065,168 @@
           "items" : {
             "$ref" : "#/definitions/ContactUserList"
           }
+        }
+      }
+    },
+    "Response_OfficeVisitAssignee" : {
+      "title" : "Office visit assignee",
+      "description" : "Office visit assignee",
+      "type" : "object",
+      "properties" : {
+        "assignee" : {
+          "type" : "object",
+          "properties" : {
+            "email" : {
+              "type" : "string",
+              "example" : "dead.pool@gmail.com"
+            },
+            "first_name" : {
+              "type" : "string",
+              "example" : "Dead"
+            },
+            "id" : {
+              "type" : "integer",
+              "example" : 1
+            },
+            "last_name" : {
+              "type" : "string",
+              "example" : "Pool"
+            },
+            "name" : {
+              "type" : "string",
+              "example" : "Dead Pool"
+            },
+            "photo" : {
+              "type" : "string",
+              "example" : null
+            },
+            "status" : {
+              "type" : "integer",
+              "example" : 1
+            }
+          }
+        }
+      }
+    },
+    "Response_OfficeVisitList" : {
+      "title" : "Office visit list",
+      "description" : "Office visit list",
+      "type" : "object",
+      "properties" : {
+        "assignee" : {
+          "$ref" : "#/definitions/Response_OfficeVisitAssignee"
+        },
+        "assignees" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Response_OfficeVisitAssignee"
+          }
+        },
+        "attended_time" : {
+          "type" : "integer",
+          "example" : null
+        },
+        "contact" : {
+          "type" : "object",
+          "properties" : {
+            "id" : {
+              "type" : "integer",
+              "example" : 100
+            },
+            "full_name" : {
+              "type" : "string",
+              "example" : "Bat Man"
+            },
+            "email" : {
+              "type" : "string",
+              "example" : "batman@gmail.com"
+            },
+            "photo_url" : {
+              "type" : "string",
+              "example" : null
+            },
+            "status" : {
+              "type" : "object",
+              "properties" : {
+                "value" : {
+                  "type" : "integer",
+                  "example" : 0
+                },
+                "label" : {
+                  "type" : "string",
+                  "example" : "Prospect"
+                }
+              }
+            }
+          }
+        },
+        "created_at" : {
+          "type" : "object",
+          "properties" : {
+            "formatted" : {
+              "type" : "object",
+              "properties" : {
+                "day" : {
+                  "type" : "string",
+                  "example" : "Wednesday"
+                },
+                "date" : {
+                  "type" : "string",
+                  "example" : "25-06-2020"
+                },
+                "time" : {
+                  "type" : "string",
+                  "example" : "02:42 PM"
+                }
+              }
+            },
+            "actual" : {
+              "type" : "string",
+              "example" : "2020-06-24T14:42:01+05:45"
+            }
+          }
+        },
+        "id" : {
+          "type" : "integer",
+          "example" : 1
+        },
+        "permissions" : {
+          "type" : "object",
+          "properties" : {
+            "can_edit" : {
+              "type" : "boolean",
+              "example" : true
+            },
+            "can_archive" : {
+              "type" : "boolean",
+              "example" : true
+            },
+            "can_delete" : {
+              "type" : "boolean",
+              "example" : true
+            }
+          }
+        },
+        "status" : {
+          "type" : "object",
+          "properties" : {
+            "value" : {
+              "type" : "integer",
+              "example" : 0
+            },
+            "label" : {
+              "type" : "string",
+              "example" : "waiting"
+            }
+          }
+        },
+        "visit_purpose" : {
+          "type" : "string",
+          "example" : "Just for inquiry"
+        },
+        "wait_time" : {
+          "type" : "integer",
+          "example" : 17353180
         }
       }
     }
